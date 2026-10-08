@@ -1,0 +1,91 @@
+import { createContext, useContext, useState } from 'react';
+const messages = {
+  en: {
+    dashboard: 'Dashboard', employees: 'Employees', login: 'Sign in', logout: 'Logout',
+    language: 'Language', role: 'Role', employeePortal: 'Employee Portal', training: 'Training',
+    enterpriseDay: 'Day 3 • Enterprise concerns', dashboardTitle: 'Employee Management Portal',
+    dashboardDescription: 'Authentication, role-based UI, i18n and API CRUD while keeping the same design system.',
+    dataSource: 'Data source', reqresApi: 'ReqRes API', department: 'Department',
+    roleAdmin: 'Admin', roleHR: 'HR', roleViewer: 'Viewer',
+    pageDescription: 'The same Employee Portal UI is carried forward every day. Only the underlying architecture and data source evolve.',
+    addEmployee: '+ Add Employee', addEmployeeTitle: 'Add Employee', editEmployeeTitle: 'Edit Employee',
+    employeeCount: 'employees', deleteEmployeeTitle: 'Delete Employee', confirmDelete: 'Are you sure you want to delete',
+    cancel: 'Cancel', delete: 'Delete', deleting: 'Deleting...', saving: 'Saving...', createEmployee: 'Create Employee',
+    updateEmployee: 'Update Employee', name: 'Name', email: 'Email', password: 'Password',
+    employeeNamePlaceholder: 'Employee name', emailPlaceholder: 'employee@company.com', roleLabel: 'Role',
+    employeeRolePlaceholder: 'Frontend Developer', status: 'Status',
+    all: 'All', engineering: 'Engineering', humanResources: 'Human Resources', design: 'Design',
+    finance: 'Finance', operations: 'Operations', active: 'Active', onLeave: 'On Leave', inactive: 'Inactive',
+    searchEmployee: 'Search employee', searchPlaceholder: 'Search employee by name or email',
+    loadingEmployees: 'Fetching employees from ReqRes...', loadingEmployee: 'Fetching employee from ReqRes...',
+    noEmployees: 'No employees found', changeFilters: 'Try changing your search or filters.',
+    view: 'View', edit: 'Edit', trainingProgression: 'Training progression',
+    'Authentication': 'Authentication', 'Role-based UI': 'Role-based UI', 'i18n': 'i18n', 'API-driven CRUD': 'API-driven CRUD',
+    topicAuthentication: 'Authentication', topicRoleBasedUi: 'Role-based UI', topicI18n: 'i18n', topicApiCrud: 'API-driven CRUD',
+    unableLoad: 'Unable to load data', retry: 'Retry', somethingWrong: 'Something went wrong.',
+    back: '← Back', dayLabel: 'Day', emailAddress: 'Email',
+    loginEyebrow: 'Day 3 • Authentication', loginDescription: 'ReqRes login is used here so the application keeps using the real API.',
+    signingIn: 'Signing in...', enterEmail: 'Enter a valid email', nameRequired: 'Name is required', roleRequired: 'Role is required'
+  },
+  hi: {
+    dashboard: 'डैशबोर्ड', employees: 'कर्मचारी', login: 'साइन इन', logout: 'लॉग आउट',
+    language: 'भाषा', role: 'भूमिका', employeePortal: 'कर्मचारी पोर्टल', training: 'प्रशिक्षण',
+    enterpriseDay: 'दिन 3 • एंटरप्राइज़ सुविधाएँ', dashboardTitle: 'कर्मचारी प्रबंधन पोर्टल',
+    dashboardDescription: 'समान डिज़ाइन प्रणाली के साथ प्रमाणीकरण, भूमिका-आधारित UI, i18n और API CRUD।',
+    dataSource: 'डेटा स्रोत', reqresApi: 'ReqRes API', department: 'विभाग',
+    roleAdmin: 'व्यवस्थापक', roleHR: 'मानव संसाधन', roleViewer: 'दर्शक',
+    pageDescription: 'हर दिन वही कर्मचारी पोर्टल UI जारी रहता है। केवल आंतरिक संरचना और डेटा स्रोत बदलते हैं।',
+    addEmployee: '+ कर्मचारी जोड़ें', addEmployeeTitle: 'कर्मचारी जोड़ें', editEmployeeTitle: 'कर्मचारी संपादित करें',
+    employeeCount: 'कर्मचारी', deleteEmployeeTitle: 'कर्मचारी हटाएँ', confirmDelete: 'क्या आप वाकई इन्हें हटाना चाहते हैं',
+    cancel: 'रद्द करें', delete: 'हटाएँ', deleting: 'हटाया जा रहा है...', saving: 'सहेजा जा रहा है...', createEmployee: 'कर्मचारी बनाएँ',
+    updateEmployee: 'कर्मचारी अपडेट करें', name: 'नाम', email: 'ईमेल', password: 'पासवर्ड',
+    employeeNamePlaceholder: 'कर्मचारी का नाम', emailPlaceholder: 'employee@company.com', roleLabel: 'पद',
+    employeeRolePlaceholder: 'फ्रंटएंड डेवलपर', status: 'स्थिति',
+    all: 'सभी', engineering: 'इंजीनियरिंग', humanResources: 'मानव संसाधन', design: 'डिज़ाइन',
+    finance: 'वित्त', operations: 'संचालन', active: 'सक्रिय', onLeave: 'छुट्टी पर', inactive: 'निष्क्रिय',
+    searchEmployee: 'कर्मचारी खोजें', searchPlaceholder: 'नाम या ईमेल से कर्मचारी खोजें',
+    loadingEmployees: 'ReqRes से कर्मचारी प्राप्त किए जा रहे हैं...', loadingEmployee: 'ReqRes से कर्मचारी प्राप्त किया जा रहा है...',
+    noEmployees: 'कोई कर्मचारी नहीं मिला', changeFilters: 'खोज या फ़िल्टर बदलकर देखें।',
+    view: 'देखें', edit: 'संपादित करें', trainingProgression: 'प्रशिक्षण प्रगति',
+    'Authentication': 'प्रमाणीकरण', 'Role-based UI': 'भूमिका-आधारित UI', 'i18n': 'i18n', 'API-driven CRUD': 'API-आधारित CRUD',
+    topicAuthentication: 'प्रमाणीकरण', topicRoleBasedUi: 'भूमिका-आधारित UI', topicI18n: 'i18n', topicApiCrud: 'API-आधारित CRUD',
+    unableLoad: 'डेटा लोड नहीं हो सका', retry: 'पुनः प्रयास करें', somethingWrong: 'कुछ गलत हुआ।',
+    back: '← वापस', dayLabel: 'दिन', emailAddress: 'ईमेल',
+    loginEyebrow: 'दिन 3 • प्रमाणीकरण', loginDescription: 'वास्तविक API का उपयोग जारी रखने के लिए यहाँ ReqRes लॉगिन का उपयोग किया जाता है।',
+    signingIn: 'साइन इन हो रहा है...', enterEmail: 'मान्य ईमेल दर्ज करें', nameRequired: 'नाम आवश्यक है', roleRequired: 'पद आवश्यक है'
+  },
+  fr: {
+    dashboard: 'Tableau de bord', employees: 'Employés', login: 'Se connecter', logout: 'Déconnexion',
+    language: 'Langue', role: 'Rôle', employeePortal: 'Portail des employés', training: 'Formation',
+    enterpriseDay: 'Jour 3 • Fonctionnalités d’entreprise', dashboardTitle: 'Portail de gestion des employés',
+    dashboardDescription: 'Authentification, interface selon les rôles, i18n et opérations CRUD via API, avec le même système de conception.',
+    dataSource: 'Source des données', reqresApi: 'API ReqRes', department: 'Département',
+    roleAdmin: 'Administrateur', roleHR: 'Ressources humaines', roleViewer: 'Lecteur',
+    pageDescription: 'Le portail des employés conserve la même interface chaque jour. Seuls l’architecture interne et la source des données évoluent.',
+    addEmployee: '+ Ajouter un employé', addEmployeeTitle: 'Ajouter un employé', editEmployeeTitle: 'Modifier l’employé',
+    employeeCount: 'employés', deleteEmployeeTitle: 'Supprimer l’employé', confirmDelete: 'Voulez-vous vraiment supprimer',
+    cancel: 'Annuler', delete: 'Supprimer', deleting: 'Suppression…', saving: 'Enregistrement…', createEmployee: 'Créer l’employé',
+    updateEmployee: 'Mettre à jour l’employé', name: 'Nom', email: 'E-mail', password: 'Mot de passe',
+    employeeNamePlaceholder: 'Nom de l’employé', emailPlaceholder: 'employe@entreprise.com', roleLabel: 'Poste',
+    employeeRolePlaceholder: 'Développeur front-end', status: 'Statut',
+    all: 'Tous', engineering: 'Ingénierie', humanResources: 'Ressources humaines', design: 'Design',
+    finance: 'Finance', operations: 'Opérations', active: 'Actif', onLeave: 'En congé', inactive: 'Inactif',
+    searchEmployee: 'Rechercher un employé', searchPlaceholder: 'Rechercher par nom ou e-mail',
+    loadingEmployees: 'Chargement des employés depuis ReqRes…', loadingEmployee: 'Chargement de l’employé depuis ReqRes…',
+    noEmployees: 'Aucun employé trouvé', changeFilters: 'Essayez de modifier votre recherche ou vos filtres.',
+    view: 'Voir', edit: 'Modifier', trainingProgression: 'Progression de la formation',
+    Authentication: 'Authentification', 'Role-based UI': 'Interface selon les rôles', i18n: 'i18n', 'API-driven CRUD': 'CRUD via API',
+    topicAuthentication: 'Authentification', topicRoleBasedUi: 'Interface selon les rôles', topicI18n: 'i18n', topicApiCrud: 'CRUD via API',
+    unableLoad: 'Impossible de charger les données', retry: 'Réessayer', somethingWrong: 'Une erreur est survenue.',
+    back: '← Retour', dayLabel: 'Jour', emailAddress: 'E-mail',
+    loginEyebrow: 'Jour 3 • Authentification', loginDescription: 'La connexion ReqRes permet à l’application de continuer à utiliser la véritable API.',
+    signingIn: 'Connexion…', enterEmail: 'Saisissez une adresse e-mail valide', nameRequired: 'Le nom est obligatoire', roleRequired: 'Le poste est obligatoire'
+  }
+};
+const I18nContext = createContext(null);
+export function I18nProvider({ children }) {
+  const [locale, setLocale] = useState('en');
+  const t = key => messages[locale]?.[key] || messages.en[key] || key;
+  return <I18nContext.Provider value={{ locale, setLocale, t }}>{children}</I18nContext.Provider>;
+}
+export const useI18n = () => useContext(I18nContext);
